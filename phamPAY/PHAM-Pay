@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PHAM-Pay</title>
+</head>
+<body>
+  <h1>PHAM-Pay 테스트</h1>
+  <button id="connect">🦊 메타마스크 연결</button>
+  <p id="wallet-address"></p>
+
+  <button id="pay">💸 Pay with PHAM</button>
+  <p id="status"></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.6.0/dist/ethers.min.js"></script>
+  <script>
+    let provider;
+    let signer;
+
+    document.getElementById("connect").onclick = async () => {
+      if (window.ethereum) {
+        provider = new ethers.BrowserProvider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        signer = await provider.getSigner();
+        const address = await signer.getAddress();
+        document.getElementById("wallet-address").innerText = "지갑 주소: " + address;
+      } else {
+        alert("메타마스크 설치 필요");
+      }
+    };
+
+    const phamTokenAddress = "0x1234567890abcdef1234567890abcdef12345678"; // 너의 PHAM 토큰 주소로 바꿔야 해
+    const recipientAddress = "0xabcd..."; // 결제를 받을 너의 지갑 주소
+
+    document.getElementById("pay").onclick = async () => {
+      const phamAbi = [
+        "function transfer(address to, uint256 amount) public returns (bool)"
+      ];
+
+      const token = new ethers.Contract(phamTokenAddress, phamAbi, signer);
+      const amount = ethers.parseUnits("1", 18); // 1 PHAM
+
+      try {
+        const tx = await token.transfer(recipientAddress, amount);
+        document.getElementById("status").innerText = "전송 중: " + tx.hash;
+        await tx.wait();
+        document.getElementById("status").innerText = "결제 완료 🎉";
+        // 여기서 다운로드 또는 콘텐츠 공개 처리 가능
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").innerText = "결제 실패 ❌";
+      }
+    };
+  </script>
+</body>
+</html>

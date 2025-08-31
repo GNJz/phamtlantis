@@ -1,0 +1,50 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>KAO Mini</title>
+  <style>
+    body{font-family:ui-sans-serif,system-ui;max-width:560px;margin:40px auto;padding:0 16px}
+    h1{margin-bottom:8px} .row{display:flex;gap:8px;margin:8px 0}
+    input,button{padding:8px 12px} pre{background:#f6f6f6;padding:12px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <h1>KAO Mini</h1>
+  <div class="row">
+    <input id="idolName" placeholder="아이돌 이름" />
+    <button onclick="createIdol()">아이돌 생성</button>
+  </div>
+  <div class="row">
+    <input id="voteName" placeholder="투표할 아이돌 이름" />
+    <button onclick="vote()">투표</button>
+  </div>
+  <div class="row">
+    <button onclick="leaderboard()">리더보드 보기</button>
+  </div>
+  <pre id="out">{ 결과가 여기에 표시됩니다 }</pre>
+
+  <script>
+    const BASE = "http://127.0.0.1:8000";
+    const out = (data)=> document.getElementById("out").textContent = JSON.stringify(data, null, 2);
+
+    async function createIdol(){
+      const name = document.getElementById("idolName").value.trim();
+      if(!name) return out({error:"이름을 입력하세요"});
+      const res = await fetch(`${BASE}/idol/${encodeURIComponent(name)}`, {method:"POST"});
+      out(await res.json());
+    }
+    async function vote(){
+      const name = document.getElementById("voteName").value.trim();
+      if(!name) return out({error:"이름을 입력하세요"});
+      const res = await fetch(`${BASE}/vote/${encodeURIComponent(name)}`, {method:"POST"});
+      out(await res.json());
+    }
+    async function leaderboard(){
+      const res = await fetch(`${BASE}/leaderboard`);
+      out(await res.json());
+    }
+  </script>
+</body>
+</html>
