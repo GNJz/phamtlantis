@@ -34,6 +34,7 @@
 ## 에러 포맷
 ```json
 { "error": { "code":"INVALID_INPUT", "message":"..." } }
+
 ## 3) `phamPAY/src/backend/main.py` (FastAPI 스켈레톤)
 ```python
 from fastapi import FastAPI, HTTPException
