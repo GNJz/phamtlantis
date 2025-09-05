@@ -1,74 +1,93 @@
-# PHAM-Pay 🪙  
-**KAO 경제권 연방코인 + 개인코인 결제 시스템 (MVP v0.1)**  
+# PHAM-Pay (MVP v0.1)
 
-PHAM-Pay는 **KAO 디지털 경제권**의 핵심 결제 시스템입니다.  
-PHAM 코인을 기반으로, **연방 코인 ↔ 개인 토큰 ↔ 실시간 결제**까지 지원하는 **익명 지갑 기반 결제 네트워크**를 목표로 합니다.
-
----
-
-## 🚀 프로젝트 비전
-- **개인 코인 경제권**  
-  누구나 자신의 토큰을 발행하고 콘텐츠·서비스를 판매 가능.
-- **연방 코인(카오 코인)**  
-  KAO 경제권 내 모든 거래를 안정화하는 중앙 코인.
-- **익명 지갑 기반**  
-  로그인·개인정보 없이 장치(WebAuthn 기반)로만 사용자를 인증.
-- **오케스트레이션 지원**  
-  Cookiie 브레인 + KAO API + Quarkka 디바이스와 자연스럽게 연동.
+KAO 경제권을 위한 **연방코인(PHAM) + 개인코인** 결제 시스템의 최소기능제품(MVP).
+로컬 우선(local-first) 설계, 지갑/송금/스왑(모의) 기능부터 시작합니다.
 
 ---
 
-## 🧩 MVP 목표 (v0.1)
-| 기능 | 설명 | 상태 |
-|------|-----------------------------|--------|
-| **지갑 생성** | 익명 지갑 생성 + 비공개 키 로컬 저장 | 🔄 설계 중 |
-| **잔고 조회** | PHAM 코인 및 개인 토큰 보유 현황 | 🔄 설계 중 |
-| **토큰 전송** | 사용자 간 개인 코인 전송 | 🔄 설계 중 |
-| **연방코인 연동** | KAO 연방코인 ↔ 개인 코인 환전 | 🔄 설계 중 |
-| **API 연계** | KAO API 및 Quarkka 디바이스와 동기화 | 🔄 설계 중 |
+## 0. 왜 PHAM-Pay인가
+- **연방코인(PHAM)**: 공통 결제 단위
+- **개인코인**: 크리에이터/개별 서비스 단위 토큰
+- **목표**: 서버 없이도 동작 가능한 로컬 지갑을 기본으로, 필요 시 서버 동기화
 
 ---
 
-## 📂 폴더 구조 (초안)
-phamPAY/
-├── README.md                # 프로젝트 개요  
-├── docs/                    # 설계 문서 & 기술 명세  
-│   ├── PHAM_Research_Income_Strategy.docx  
-│   └── Pham-Pay_설계초안_v0.1.docx  
-├── src/                     # 클라이언트/서버 코드  
-│   ├── backend/             # Python/FastAPI 기반 서버  
-│   ├── frontend/            # React/Tailwind 기반 클라이언트  
-│   └── contracts/           # 개인코인/연방코인 스마트 컨트랙트  
-└── tests/                   # 단위 및 통합 테스트  
----
-
-## 🛠 기술 스택 (예정)
-- **Backend:** Python + FastAPI
-- **Frontend:** React + Tailwind
-- **Wallet:** WebAuthn + JWT 기반
-- **Blockchain:** EVM 호환 + PHAM 전용 스마트컨트랙트
-- **Security:** Cloudflare + Zero-Knowledge Proof(ZKP) + 익명 인증
+## 1. MVP 범위 (v0.1)
+- [x] 지갑 생성(모의), 잔고 조회
+- [x] 토큰 전송(P2P, 모의 장부)
+- [x] PHAM ↔ 개인토큰 스왑 **견적/모의 체결**
+- [x] 트랜잭션 조회
+- [ ] WebAuthn/디바이스 서명(다음 버전)
+- [ ] 실제 체인 연동(테스트넷/사설체인)
 
 ---
 
-## 🗺️ 개발 로드맵 (MVP v0.1 → Beta)
-| 단계 | 기간 | 목표 |
-|------|------|------------------------------|
-| **1단계** | 2025 Q3 | 폴더 구조 설계 + API 스펙 정의 |
-| **2단계** | 2025 Q4 | 지갑 생성 + 토큰 발행 PoC |
-| **3단계** | 2026 Q1 | KAO 연방코인 ↔ 개인코인 연동 |
-| **4단계** | 2026 Q2 | Quarkka 디바이스 결제 테스트 |
-| **5단계** | 2026 Q3 | 퍼블릭 베타 오픈 |
+## 2. 폴더 구조
+
+phamPAY/  
+├─ README.md  
+├─ docs/  
+│  └─ Pham-Pay_API_Spec_v0.1.md   # API 상세 스펙  
+├─ src/  
+│  └─ backend/  
+│     └─ main.py                   # FastAPI 엔드포인트(모의 로직)  
+└─ tests/                          # 추후 테스트 코드  
 
 ---
 
-## 📌 다음 액션
-1. `docs/`에 **KAO 경제권 아키텍처 설계서** 추가  
-2. MVP 핵심 API 스펙 정의  
-3. FastAPI 기반 REST 서버 골격 제작  
-4. Cookiie 브레인 & Quarkka 디바이스 통합 플랜 초안 작성  
+## 3. 빠른 시작 (로컬 실행)
 
----
+### 의존성
+```bash
+pip install fastapi uvicorn
+uvicorn phamPAY.src.backend.main:app --reload
+문서/테스트
+	•	OpenAPI: http://127.0.0.1:8000/docs
+	•	헬스체크(추가 시): GET /healthz
 
-**작성일:** 2025-09-05  
-**작성자:** 재진(jazzin) + Quartz  
+⸻
+
+4. 핵심 엔드포인트 (요약)
+
+상세 파라미터와 응답 포맷은 docs/Pham-Pay_API_Spec_v0.1.md 참고
+기능
+메서드
+경로
+지갑 생성
+POST
+/api/v1/wallet/create
+잔고 조회
+GET
+/api/v1/wallet/balance?address=0x...
+토큰 전송
+POST
+/api/v1/token/transfer
+연방코인 스왑(모의)
+POST
+/api/v1/federal/swap
+트랜잭션 조회
+GET
+/api/v1/tx/{tx_id}
+
+기능
+메서드
+경로
+지갑 생성
+POST
+/api/v1/wallet/create
+잔고 조회
+GET
+/api/v1/wallet/balance?address=0x...
+토큰 전송
+POST
+/api/v1/token/transfer
+연방코인 스왑(모의)
+POST
+/api/v1/federal/swap
+트랜잭션 조회
+GET
+/api/v1/tx/{tx_id}
+### 다음 액션
+1) `phamPAY/README.md`를 위 내용으로 덮어쓰기  
+2) `docs/Pham-Pay_API_Spec_v0.1.md`와 `src/backend/main.py`도 이어서 커밋하면 완성도가 확 올라가요.
+
